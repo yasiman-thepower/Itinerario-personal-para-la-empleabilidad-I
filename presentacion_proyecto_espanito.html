@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Intermodular ASIR – Espanito</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --navy: #0d1b2a;
+            --navy-mid: #1b2e42;
+            --accent: #c8a96e;
+            --accent-light: #e8d5aa;
+            --white: #ffffff;
+            --off-white: #f7f5f0;
+            --text: #1a1a2e;
+            --muted: #5a6a7a;
+            --border: #ddd8ce;
+            --tag-bg: #eef2f7;
+            --tag-border: #c8d4e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #e8e4dc;
+            color: var(--text);
+        }
+        
+        .booklet {
+            max-width: 780px;
+            margin: 40px auto;
+        }
+        /* ── COVER ── */
+        
+        .cover {
+            background: var(--navy);
+            color: var(--white);
+            min-height: 560px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .cover-grid {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(200, 169, 110, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(200, 169, 110, 0.06) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+        
+        .cover-bar {
+            background: var(--accent);
+            width: 6px;
+            position: absolute;
+            left: 56px;
+            top: 0;
+            bottom: 0;
+        }
+        
+        .cover-content {
+            position: relative;
+            z-index: 2;
+            padding: 70px 70px 70px 86px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .cover-label {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 500;
+        }
+        
+        .cover-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 54px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-top: 20px;
+            color: var(--white);
+        }
+        
+        .cover-title span {
+            color: var(--accent);
+        }
+        
+        .cover-subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 14px;
+            font-weight: 300;
+            max-width: 440px;
+            line-height: 1.6;
+        }
+        
+        .cover-meta {
+            display: flex;
+            gap: 48px;
+            align-items: flex-end;
+        }
+        
+        .cover-meta-item label {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        
+        .cover-meta-item p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 400;
+        }
+        
+        .cover-deco {
+            position: absolute;
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            border: 1px solid rgba(200, 169, 110, 0.15);
+        }
+        
+        .cover-deco-2 {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 1px solid rgba(200, 169, 110, 0.08);
+        }
+        /* ── PAGES ── */
+        
+        .page {
+            background: var(--white);
+            padding: 64px 80px;
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+        }
+        
+        .page:last-child {
+            border-radius: 0 0 4px 4px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .page+.page {
+            border-top: 1px solid var(--border);
+        }
+        /* ── INDEX PAGE ── */
+        
+        .index-page {
+            background: var(--off-white);
+        }
+        
+        .index-header {
+            display: flex;
+            align-items: baseline;
+            gap: 20px;
+            margin-bottom: 48px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .index-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 60px;
+            color: var(--accent);
+            line-height: 1;
+            font-weight: 700;
+        }
+        
+        .index-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--navy);
+        }
+        
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        
+        .toc-item {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .toc-item:last-child {
+            border-bottom: none;
+        }
+        
+        .toc-n {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--accent);
+            width: 44px;
+            flex-shrink: 0;
+            font-weight: 700;
+        }
+        
+        .toc-text {
+            font-size: 15px;
+            color: var(--navy);
+            font-weight: 500;
+            flex: 1;
+        }
+        
+        .toc-dot {
+            flex: 1;
+            margin: 0 12px;
+            border-bottom: 1px dotted var(--border);
+            max-width: 200px;
+        }
+        
+        .toc-sub {
+            font-size: 12px;
+            color: var(--muted);
+            max-width: 260px;
+        }
+        /* ── SECTION HEADERS ── */
+        
+        .section-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .section-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            line-height: 1;
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: -8px;
+        }
+        
+        .section-title-block {}
+        
+        .section-label {
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--navy);
+            line-height: 1.2;
+        }
+        /* ── BODY TEXT ── */
+        
+        .body-text {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #2d3748;
+            margin-bottom: 24px;
+        }
+        
+        .body-text strong {
+            color: var(--navy);
+            font-weight: 500;
+        }
+        /* ── HIGHLIGHT BOX ── */
+        
+        .highlight {
+            background: var(--navy);
+            color: var(--white);
+            padding: 28px 32px;
+            border-radius: 2px;
+            margin: 32px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .highlight::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
+        }
+        
+        .highlight p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.88);
+        }
+        
+        .highlight strong {
+            color: var(--accent);
+        }
+        /* ── PROBLEM GRID ── */
+        
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 32px 0;
+        }
+        
+        .problem-card {
+            background: var(--off-white);
+            border: 1px solid var(--border);
+            padding: 20px 22px;
+            border-radius: 2px;
+        }
+        
+        .problem-card .icon {
+            font-size: 20px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .problem-card h4 {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--navy);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .problem-card p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+        
+        .solution-card {
+            background: var(--navy);
+            border: none;
+        }
+        
+        .solution-card h4 {
+            color: var(--accent);
+        }
+        
+        .solution-card p {
+            color: rgba(255, 255, 255, 0.65);
+        }
+        /* ── USERS SECTION ── */
+        
+        .user-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 24px 0;
+        }
+        
+        .user-card {
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: 2px;
+        }
+        
+        .user-card .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+        
+        .user-card h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+        
+        .user-card p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+        /* ── TECH TABLE ── */
+        
+        .tech-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 28px 0;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .tech-row {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tech-row:last-child {
+            border-bottom: none;
+        }
+        
+        .tech-module {
+            background: var(--off-white);
+            padding: 16px 20px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            border-right: 1px solid var(--border);
+        }
+        
+        .tech-detail {
+            padding: 16px 20px;
+            font-size: 13px;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .tag {
+            background: var(--tag-bg);
+            border: 1px solid var(--tag-border);
+            padding: 3px 10px;
+            border-radius: 2px;
+            font-size: 12px;
+            color: var(--navy-mid);
+            font-weight: 500;
+        }
+        /* ── MODULES ── */
+        
+        .modules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 28px 0;
+        }
+        
+        .module-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 20px 24px;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        .module-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--accent);
+            border-radius: 2px 0 0 2px;
+        }
+        
+        .module-code {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+            width: 60px;
+            line-height: 1;
+            margin-top: 2px;
+        }
+        
+        .module-info h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        
+        .module-info p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        /* ── LEARNINGS ── */
+        
+        .learning-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin: 28px 0;
+        }
+        
+        .learning-item {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .learning-n {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+            line-height: 1;
+            margin-top: 4px;
+        }
+        
+        .learning-text h4 {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+        
+        .learning-text p {
+            font-size: 14px;
+            color: #4a5568;
+            line-height: 1.7;
+        }
+        /* ── PROFILE PAGE ── */
+        
+        .profile-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .profile-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+        
+        .profile-info .role {
+            font-size: 13px;
+            color: var(--muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        
+        .profile-info .contact-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .profile-info .contact-list li {
+            font-size: 13px;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            width: 64px;
+            flex-shrink: 0;
+        }
+        
+        .profile-skills h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+        
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .skill-tag {
+            background: var(--navy);
+            color: var(--accent-light);
+            padding: 4px 12px;
+            border-radius: 2px;
+            font-size: 12px;
+            font-weight: 400;
+        }
+        /* ── REPO ── */
+        
+        .repo-box {
+            background: var(--navy);
+            border-radius: 2px;
+            padding: 28px 32px;
+            margin: 28px 0;
+            color: var(--white);
+        }
+        
+        .repo-box .repo-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        
+        .repo-box .repo-url {
+            font-size: 16px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 16px;
+        }
+        
+        .repo-structure {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 2px;
+            padding: 16px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+        }
+        
+        .repo-structure .dir {
+            color: var(--accent);
+        }
+        /* ── DIVIDER ── */
+        
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+        /* ── BACK COVER ── */
+        
+        .back-cover {
+            background: var(--navy-mid);
+            padding: 60px 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 0 0 4px 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .back-cover::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
+        }
+        
+        .back-cover .bc-left {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .back-cover .bc-label {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+        
+        .back-cover .bc-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--white);
+        }
+        
+        .back-cover .bc-right {
+            text-align: right;
+        }
+        
+        .back-cover .bc-year {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            color: rgba(200, 169, 110, 0.2);
+            font-weight: 900;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .booklet {
+                margin: 0;
+                max-width: 100%;
+            }
+            .cover {
+                border-radius: 0;
+                min-height: 100vh;
+                page-break-after: always;
+            }
+            .index-page {
+                page-break-after: always;
+            }
+            .page {
+                border: none;
+            }
+            .back-cover {
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="booklet">
+
+        <!-- COVER -->
+        <div class="cover">
+            <div class="cover-grid"></div>
+            <div class="cover-bar"></div>
+            <div class="cover-deco"></div>
+            <div class="cover-deco-2"></div>
+            <div class="cover-content">
+                <div>
+                    <div class="cover-label">Proyecto Intermodular · ASIR 1º · 2024–2025</div>
+                    <h1 class="cover-title">Infraestructura<br>IT para <span>Espanito</span></h1>
+                    <p class="cover-subtitle">Diseño, implementación y documentación completa de la infraestructura tecnológica de una agencia real de orientación y admisión de estudiantes internacionales.</p>
+                </div>
+                <div class="cover-meta">
+                    <div class="cover-meta-item">
+                        <label>Autor</label>
+                        <p>Yassin Mansouri</p>
+                    </div>
+                    <div class="cover-meta-item">
+                        <label>Centro</label>
+                        <p>Prometeo FP · Madrid</p>
+                    </div>
+                    <div class="cover-meta-item">
+                        <label>Entrega</label>
+                        <p>Mayo 2026s</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ÍNDICE -->
+        <div class="page index-page">
+            <div class="index-header">
+                <div class="index-num">00</div>
+                <div>
+                    <div class="section-label">Contenido del documento</div>
+                    <div class="index-title">Índice</div>
+                </div>
+            </div>
+            <ul class="toc-list">
+                <li class="toc-item">
+                    <span class="toc-n">01</span>
+                    <span class="toc-text">¿Qué es este proyecto?</span>
+                    <span class="toc-dot"></span>
+                    <span class="toc-sub">Origen, contexto y descripción general</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-n">02</span>
+                    <span class="toc-text">El problema que resuelve</span>
+                    <span class="toc-dot"></span>
+                    <span class="toc-sub">Necesidades reales de la agencia Espanito</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-n">03</span>
+                    <span class="toc-text">¿Para quién está pensado?</span>
+                    <span class="toc-dot"></span>
+                    <span class="toc-sub">Usuarios internos y contexto académico</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-n">04</span>
+                    <span class="toc-text">Tecnologías utilizadas</span>
+                    <span class="toc-dot"></span>
+                    <span class="toc-sub">Stack técnico por módulo (sin hardware)</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-n">05</span>
+                    <span class="toc-text">Módulos del proyecto</span>
+                    <span class="toc-dot"></span>
+                    <span class="toc-sub">Descripción de cada parte de la infraestructura</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-n">06</span>
+                    <span class="toc-text">Aprendizajes clave</span>
+                    <span class="toc-dot"></span>
+                    <span class="toc-sub">Qué ha aportado este proyecto</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-n">07</span>
+                    <span class="toc-text">Repositorio y organización</span>
+                    <span class="toc-dot"></span>
+                    <span class="toc-sub">Estructura GitHub del proyecto</span>
+                </li>
+                <li class="toc-item">
+                    <span class="toc-n">08</span>
+                    <span class="toc-text">Perfil del autor</span>
+                    <span class="toc-dot"></span>
+                    <span class="toc-sub">Yassin Mansouri · Contacto y habilidades</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 01 QUÉ ES -->
+        <div class="page">
+            <div class="section-header">
+                <div class="section-num">01</div>
+                <div class="section-title-block">
+                    <div class="section-label">Descripción general</div>
+                    <div class="section-title">¿Qué es este proyecto?</div>
+                </div>
+            </div>
+
+            <p class="body-text">
+                Este proyecto consiste en el <strong>diseño, despliegue y documentación completa de la infraestructura tecnológica</strong> de una agencia real de orientación y admisión de estudiantes internacionales: <strong>Espanito</strong>.
+            </p>
+
+            <p class="body-text">
+                Se trata de un proyecto intermodular de 1º de ASIR que integra todos los módulos del curso en torno a un caso de uso concreto y funcional: una empresa que existe de verdad y que el propio autor dirige. Esto convierte el proyecto en algo más que un ejercicio
+                académico — es la documentación técnica de una infraestructura real.
+            </p>
+
+            <div class="highlight">
+                <p><strong>Espanito</strong> es una agencia de orientación académica internacional con sede en Madrid, especializada en ayudar a estudiantes iraníes a acceder a universidades en España y Europa. La infraestructura IT diseñada en este proyecto
+                    da soporte tecnológico completo a todas las operaciones de la agencia.</p>
+            </div>
+
+            <p class="body-text">
+                El objetivo del proyecto no es instalar sistemas de forma aislada, sino <strong>diseñar y articular una infraestructura coherente</strong>: red, servidores, base de datos, gestión de datos estructurados y arquitectura cloud, todo documentado
+                y organizado en un repositorio profesional en GitHub.
+            </p>
+        </div>
+
+        <!-- 02 PROBLEMA -->
+        <div class="page">
+            <div class="section-header">
+                <div class="section-num">02</div>
+                <div class="section-title-block">
+                    <div class="section-label">Justificación del proyecto</div>
+                    <div class="section-title">El problema que resuelve</div>
+                </div>
+            </div>
+
+            <p class="body-text">
+                Espanito gestiona de forma manual un conjunto de procesos complejos: seguimiento de expedientes de estudiantes, control documental, coordinación entre asesores, agenda de citas y facturación. Sin una infraestructura IT estructurada, estos procesos son
+                lentos, propensos a errores y difíciles de escalar.
+            </p>
+
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <h4>Gestión desorganizada</h4>
+                    <p>Información de estudiantes, documentos y solicitudes dispersa en correos y hojas de cálculo sin estructura centralizada.</p>
+                </div>
+                <div class="problem-card">
+                    <h4>Falta de control</h4>
+                    <p>Sin seguimiento estructurado del estado de cada candidatura es imposible gestionar eficientemente múltiples estudiantes.</p>
+                </div>
+                <div class="problem-card">
+                    <h4>Comunicación ineficiente</h4>
+                    <p>La coordinación entre asesores y estudiantes carece de un sistema centralizado de citas y notificaciones.</p>
+                </div>
+                <div class="problem-card solution-card">
+                    <h4>La solución</h4>
+                    <p>Una infraestructura IT completa: red local segura, servidor con base de datos relacional, servicios DNS/DHCP, datos estructurados y acceso cloud gestionado.</p>
+                </div>
+            </div>
+
+            <p class="body-text">
+                La infraestructura diseñada en este proyecto da respuesta directa a cada uno de estos problemas, aplicando los conocimientos adquiridos en todos los módulos de 1º de ASIR.
+            </p>
+        </div>
+
+        <!-- 03 PARA QUIÉN -->
+        <div class="page">
+            <div class="section-header">
+                <div class="section-num">03</div>
+                <div class="section-title-block">
+                    <div class="section-label">Usuarios del sistema</div>
+                    <div class="section-title">¿Para quién está pensado?</div>
+                </div>
+            </div>
+
+            <p class="body-text">
+                El sistema da servicio a dos tipos de usuarios con necesidades y niveles de acceso diferenciados:
+            </p>
+
+            <div class="user-row">
+                <div class="user-card">
+                    <div class="avatar">A</div>
+                    <h4>Asesores y equipo de la agencia</h4>
+                    <p>Acceden a la base de datos para gestionar expedientes de estudiantes, documentos, citas y pagos. Necesitan conexión segura a la red interna y acceso a los servicios del servidor.</p>
+                </div>
+                <div class="user-card">
+                    <div class="avatar">D</div>
+                    <h4>Dirección (administrador)</h4>
+                    <p>Acceso completo al sistema: administración del servidor, gestión de usuarios de red y base de datos, backups y monitorización general de la infraestructura.</p>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <p>Desde el punto de vista <strong>académico</strong>, este proyecto demuestra la capacidad de diseñar, implantar y documentar una infraestructura IT real, integrando los conocimientos de todos los módulos de 1º de ASIR en torno a un caso
+                    de uso coherente y funcional.</p>
+            </div>
+        </div>
+
+        <!-- 04 TECNOLOGÍAS -->
+        <div class="page">
+            <div class="section-header">
+                <div class="section-num">04</div>
+                <div class="section-title-block">
+                    <div class="section-label">Stack técnico del proyecto</div>
+                    <div class="section-title">Tecnologías utilizadas</div>
+                </div>
+            </div>
+
+            <p class="body-text">
+                Cada módulo del curso aporta una capa técnica distinta a la infraestructura. A continuación se detalla el stack utilizado en cada área:
+            </p>
+
+            <div class="tech-grid">
+                <div class="tech-row">
+                    <div class="tech-module">Redes · 0370</div>
+                    <div class="tech-detail">
+                        <span class="tag">TCP/IP</span>
+                        <span class="tag">DNS</span>
+                        <span class="tag">DHCP</span>
+                        <span class="tag">192.168.10.0/24</span>
+                        <span class="tag">Cisco Switch</span>
+                        <span class="tag">WiFi AP</span>
+                    </div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-module">Sistemas Op. · 0369</div>
+                    <div class="tech-detail">
+                        <span class="tag">Ubuntu Server 22.04</span>
+                        <span class="tag">Windows 11</span>
+                        <span class="tag">SSH</span>
+                        <span class="tag">Samba</span>
+                    </div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-module">Bases de datos · 0372</div>
+                    <div class="tech-detail">
+                        <span class="tag">MySQL 8.0</span>
+                        <span class="tag">8 tablas relacionales</span>
+                        <span class="tag">mysqldump</span>
+                        <span class="tag">Usuarios y permisos</span>
+                    </div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-module">Lenguajes marcas · 0373</div>
+                    <div class="tech-detail">
+                        <span class="tag">XML</span>
+                        <span class="tag">XSD</span>
+                        <span class="tag">Validación</span>
+                        <span class="tag">Exportación de datos</span>
+                    </div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-module">Cloud · MPO</div>
+                    <div class="tech-detail">
+                        <span class="tag">AWS EC2</span>
+                        <span class="tag">AWS RDS</span>
+                        <span class="tag">AWS S3</span>
+                        <span class="tag">Estimación de costes</span>
+                    </div>
+                </div>
+                <div class="tech-row">
+                    <div class="tech-module">Empleabilidad · 1709</div>
+                    <div class="tech-detail">
+                        <span class="tag">GitHub</span>
+                        <span class="tag">LinkedIn</span>
+                        <span class="tag">Markdown</span>
+                        <span class="tag">Portfolio</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 05 MÓDULOS -->
+        <div class="page">
+            <div class="section-header">
+                <div class="section-num">05</div>
+                <div class="section-title-block">
+                    <div class="section-label">Estructura del proyecto</div>
+                    <div class="section-title">Módulos del proyecto</div>
+                </div>
+            </div>
+
+            <p class="body-text">
+                El proyecto se divide en seis bloques técnicos, cada uno correspondiente a un módulo del curso y aportando una capa diferente a la infraestructura total:
+            </p>
+
+            <div class="modules-list">
+                <div class="module-item">
+                    <div class="module-code">0370</div>
+                    <div class="module-info">
+                        <h4>Planificación y administración de redes</h4>
+                        <p>Diseño de la topología de red en estrella, plan de direccionamiento IP (192.168.10.0/24), configuración de servicios DNS y DHCP, dispositivos: router, switch gestionable y puntos de acceso WiFi.</p>
+                    </div>
+                </div>
+                <div class="module-item">
+                    <div class="module-code">0369</div>
+                    <div class="module-info">
+                        <h4>Implantación de sistemas operativos</h4>
+                        <p>Instalación y configuración de Ubuntu Server 22.04 LTS (servidor principal) y Windows 11 (equipos de los asesores). Gestión de usuarios, grupos, permisos y servicios básicos: SSH, compartición de archivos con Samba.</p>
+                    </div>
+                </div>
+                <div class="module-item">
+                    <div class="module-code">0372</div>
+                    <div class="module-info">
+                        <h4>Gestión de bases de datos</h4>
+                        <p>Base de datos relacional MySQL con 8 tablas: estudiantes, asesores, universidades, programas, solicitudes, documentos, citas y pagos. Incluye consultas SQL, gestión de usuarios con permisos diferenciados y scripts de backup.</p>
+                    </div>
+                </div>
+                <div class="module-item">
+                    <div class="module-code">0373</div>
+                    <div class="module-info">
+                        <h4>Lenguajes de marcas</h4>
+                        <p>Documento XML para exportación estructurada de datos de estudiantes y sus solicitudes, con esquema XSD completo para validación. Integrado como módulo de exportación de la base de datos.</p>
+                    </div>
+                </div>
+                <div class="module-item">
+                    <div class="module-code">MPO</div>
+                    <div class="module-info">
+                        <h4>Computación en la nube</h4>
+                        <p>Diseño de la arquitectura equivalente en AWS: EC2 para el servidor de aplicación, RDS para la base de datos gestionada y S3 para almacenamiento de documentos. Estimación de costes mensuales con calculadora AWS.</p>
+                    </div>
+                </div>
+                <div class="module-item">
+                    <div class="module-code">1709</div>
+                    <div class="module-info">
+                        <h4>Itinerario personal para la empleabilidad I</h4>
+                        <p>Perfil profesional, investigación de empresas del sector (Telefónica Tech, Indra, NTT DATA), análisis de perfiles profesionales en LinkedIn y GitHub, portfolio y reflexión personal.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 06 APRENDIZAJES -->
+        <div class="page">
+            <div class="section-header">
+                <div class="section-num">06</div>
+                <div class="section-title-block">
+                    <div class="section-label">Conclusiones técnicas</div>
+                    <div class="section-title">Aprendizajes clave</div>
+                </div>
+            </div>
+
+            <p class="body-text">
+                Desarrollar este proyecto sobre una empresa real ha permitido conectar los conocimientos del curso de una forma que un caso ficticio no habría conseguido:
+            </p>
+
+            <div class="learning-list">
+                <div class="learning-item">
+                    <div class="learning-n">01</div>
+                    <div class="learning-text">
+                        <h4>La red y el sistema operativo son inseparables</h4>
+                        <p>Configurar DNS en Ubuntu Server para que funcione con los clientes Windows de la red demostró que ambas capas deben diseñarse juntas, no como módulos independientes.</p>
+                    </div>
+                </div>
+                <div class="learning-item">
+                    <div class="learning-n">02</div>
+                    <div class="learning-text">
+                        <h4>El diseño de datos impacta en todo lo demás</h4>
+                        <p>El esquema relacional de la base de datos determinó cómo se estructuran los XML de exportación, cómo acceden los asesores al sistema y qué consultas son posibles. Un modelo de datos deficiente afecta a toda la infraestructura.</p>
+                    </div>
+                </div>
+                <div class="learning-item">
+                    <div class="learning-n">03</div>
+                    <div class="learning-text">
+                        <h4>La documentación es parte del trabajo técnico</h4>
+                        <p>Documentar cada decisión — por qué este sistema operativo, por qué este rango IP, por qué esta estructura de tablas — hizo el razonamiento técnico más riguroso y el resultado más profesional.</p>
+                    </div>
+                </div>
+                <div class="learning-item">
+                    <div class="learning-n">04</div>
+                    <div class="learning-text">
+                        <h4>Los proyectos reales tienen restricciones que los ficticios no tienen</h4>
+                        <p>Al basarse en Espanito, el diseño tuvo que adaptarse a necesidades concretas: número real de usuarios, tipos de documentos reales, flujos de trabajo existentes. Esto es infinitamente más formativo que un caso inventado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 07 REPOSITORIO -->
+        <div class="page">
+            <div class="section-header">
+                <div class="section-num">07</div>
+                <div class="section-title-block">
+                    <div class="section-label">Control de versiones y organización</div>
+                    <div class="section-title">Repositorio y organización</div>
+                </div>
+            </div>
+
+            <p class="body-text">
+                Todo el trabajo del proyecto está organizado en un repositorio público de GitHub con una estructura clara por módulo, de forma que cualquier persona que lo revise pueda navegar y entender el proyecto sin explicación adicional.
+            </p>
+
+            <div class="repo-box">
+                <div class="repo-label">GitHub Repository</div>
+                <div class="repo-url">github.com/yasiman-thepower</div>
+                <div class="repo-structure">
+                    <span class="dir">proyecto-intermodular-asir/</span> ├── <span class="dir">redes/</span> → Topología, diagrama y plan IP ├── <span class="dir">sistemas/</span> → Instalación y configuración del SO ├── <span class="dir">basededatos/</span>                    → Scripts SQL y diagrama E/R ├── <span class="dir">xml/</span> → XML + XSD + evidencia validación ├── <span class="dir">cloud/</span> → Arquitectura AWS + costes └── <span class="dir">docs/</span> ├── <span class="dir">empleabilidad/</span>                    → Perfil, portfolio, reflexión └── README.md → Presentación del proyecto</div>
+            </div>
+
+            <p class="body-text">
+                Cada carpeta contiene su propio <strong>README.md</strong> explicando el contenido, las decisiones tomadas y cómo se relaciona con el resto del proyecto. El repositorio funciona tanto como entregable académico como como pieza de portfolio
+                profesional.
+            </p>
+        </div>
+
+        <!-- 08 PERFIL -->
+        <div class="page">
+            <div class="section-header">
+                <div class="section-num">08</div>
+                <div class="section-title-block">
+                    <div class="section-label">Autor del proyecto</div>
+                    <div class="section-title">Perfil del autor</div>
+                </div>
+            </div>
+
+            <div class="profile-block">
+                <div class="profile-info">
+                    <h3>Yassin Mansouri</h3>
+                    <div class="role">Técnico de Redes y Sistemas · ASIR 1º</div>
+                    <ul class="contact-list">
+                        <li>
+                            <span class="contact-label">Email</span> y.mansouriacc@gmail.com
+                        </li>
+                        <li>
+                            <span class="contact-label">Teléfono</span> +34 607 42 88 63
+                        </li>
+                        <li>
+                            <span class="contact-label">LinkedIn</span> yassin-mansouri-4b7b41174
+                        </li>
+                        <li>
+                            <span class="contact-label">GitHub</span> yasiman-thepower
+                        </li>
+                        <li>
+                            <span class="contact-label">Web</span> ymansouri.ir
+                        </li>
+                        <li>
+                            <span class="contact-label">Ubicación</span> Madrid, España
+                        </li>
+                    </ul>
+                </div>
+                <div class="profile-skills">
+                    <h4>Habilidades técnicas</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">TCP/IP</span>
+                        <span class="skill-tag">Cisco IOS</span>
+                        <span class="skill-tag">DNS / DHCP</span>
+                        <span class="skill-tag">Linux</span>
+                        <span class="skill-tag">Windows Server</span>
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">VMware</span>
+                        <span class="skill-tag">VPN</span>
+                        <span class="skill-tag">Firewalls</span>
+                        <span class="skill-tag">MCSA</span>
+                        <span class="skill-tag">WordPress</span>
+                        <span class="skill-tag">SEO</span>
+                    </div>
+
+                    <br>
+                    <h4>Idiomas</h4>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Persa — nativo</span>
+                        <span class="skill-tag">Español — C1</span>
+                        <span class="skill-tag">Inglés — C1</span>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <p class="body-text">
+                Técnico de redes e IT con más de 6 años de experiencia en administración de redes, soporte de sistemas e instrucción técnica. Fundador de <strong>Espanito</strong> y representante exclusivo de Northwest International University. Actualmente
+                orientado hacia el perfil de <strong>Network Administrator</strong>, con el objetivo de obtener la certificación CCNA y especializarse en seguridad de redes.
+            </p>
+        </div>
+
+        <!-- BACK COVER -->
+        <div class="back-cover">
+            <div class="bc-left">
+                <div class="bc-label">Proyecto Intermodular · ASIR 1º</div>
+                <div class="bc-name">Yassin Mansouri</div>
+            </div>
+            <div class="bc-right">
+                <div class="bc-year">2025</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
